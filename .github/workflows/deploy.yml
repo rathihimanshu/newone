@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v3
 
     # Configure Workload Identity Federation and generate 
-an access token.
+# an access token.
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
@@ -35,8 +35,7 @@ an access token.
 secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
         service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-    # Get the GKE credentials so we can deploy to the 
-cluster
+    # Get the GKE credentials so we can deploy to the # cluster
     - name: Set up GKE credentials
       uses: google-github-actions/get-gke-credentials@v0
       with:
