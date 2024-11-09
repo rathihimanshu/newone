@@ -1,7 +1,8 @@
 #refer -- https://github.com/google-github-actions/get-gke-credentials 
+#refer -- https://github.com/google-github-actions/auth#preferred-direct-workload-identity-federation
 
 
-name: Prepare Manifests and Deploy to GKE
+name: Deploying to GKE
 
 on:
   push:
@@ -14,9 +15,22 @@ env:
   ENVIRONMENT: dev
   WORKLOAD_IDENTITY_PROVIDER_ID: projects/79565114457/locations/global/workloadIdentityPools/github/providers/my-repo
   GCP_SERVICE_ACCOUNT: github@testproject-00717777.iam.gserviceaccount.com
+  GOOGLE_CREDENTIALS: {
+  "type": "service_account",
+  "project_id": "testproject-00717777",
+  "private_key_id": "3e8cccf9c8afbc29403685a70b69696b26cc06ec",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDXQq5xUFDBV0D6\nTz51IAIrYFJ7jzEa202bu3iJM8R6Cb9poPzMni/cwnbewe826HXkp/8Lpdu9s//r\nwUsPhrLl7V3xNR9oau9/6PQIQ8bLLHfb500uM0PpzdBCnOvK3m+uUCtlhiQmLQ8W\nZoR0U1Om5xTwf/2dakeT5h4BNG689M5gN/gH9QC/61/xUXORfxQrjjSDTZy/r8/E\nS/zPSCnRUGSxnu9e8Ya42sCqom6uWimNWuOMKUp8rNGQeT0STF1LJowV/h9oeYZv\nGhAbewXyyCvZv5mNKSaHQWZMCCDG80AjOjTAL5n6FcN7MR7mSXjoTsmHfLcIg3vY\nuWrDPkb/AgMBAAECggEAGTOMqhDVw4JBmzctKsKP6SAicqYgVkftMsRPUlDQjzEW\nSyQ2idt4jbHpVMmuWzv6lsXhotgiJ82BCCAzIiLfovJCmKYNgp4HuBk/02U2oDwZ\nNDzvg5nWOPMy5KRBKW5tSM0d/N7S20f/MjItDlQLFnPgtwoPrnRDjlnXPXDes28G\nxU5tg0NLh2ymWmp8HTs3JHlF4RWpeN8rErqQ/xQGlIR1GHyy+9ilS2d1DTzqjhhw\nMidqaZ0ppJ9jxp5hzHmUjjXRFqwqfnSXfHaUVNrdzs+kutSdUV0B7Nlo9VR2No0W\n3MzY5McoPbg2T5AFvsVyQVzfElPrQdJwIXwSC++RwQKBgQDsLYQI5cuj3CE6ZM+2\nf0q1LUpT8fhMmgEcFh8QpRFF+6K36eNN7YcmAyYNBxCBjr6Yx6dFp1iYdFUZb1e1\nSMONjBfmwP1bps6tDWc+Qo0LdHCiurFqe0Y29HLGb7l3SAtQU9u5H5R+bHmk1VOV\nqHPPIW7O+9YGqoOV74T7xrsYbwKBgQDpU70o+g1JlKnmrO6aRQI+e9DMzbeiAfAk\n28letVXdQTaS9/D89Oi0brlhP4rQtQGQdp3pFjtsD9OUbapbt3LvHdivMRrLixFk\nuVXnjbqeU8754T2Ot62qC5Ea/3iml6+uLFs+3uh7GqP4fFNh//VCVwqr8Qxa+7GU\nl2itRJJicQKBgQCEsH3B0fk7Mm2otQLN8W4zpCJiT0vFHbEJ6pPBcjvmKZ4d3dXK\n7mxDuvkh0JpBb8U9aM5dn8tyu8kj5R5Nx3e2isLS7hJp76mmKCWdIR7FFMJDashK\nnr+wGF5zhkmY7m0M0FBeDZQMAz3EkeXH60BFWu86ctqoHByZnFwGaHytGQKBgQDU\nO5MoHqrPbyZL6KjwMi0kYMNARy7tcg3ZuQGl4BPGOXdGn7jYnny9AqokxwOha8OM\ngBiK1+odFRhDPq1i1673yZI7aNMSqeCcWejFwqkpMtpleHfhxTl2HydSA2bfQcJP\nD5G/0kptD4Jul8fQsF2KhlnypEO0zpRssHxKfsEYQQKBgQDlbfObSiyAjr428gGs\nRLpoXtO+8d8+ZZU8aGn2y5HvgelQEp3BaV+g6HSXy1SOc6sar4mUsDHV5Z9bVRwR\nE8h2HIJDpz3HC1CqRugueUBxV0VOIigcbsUcMYswqi8TywUJz2/qADyt7+F63O7P\nJbUP6W7ZZS7wQ+kTeJnXVA66oQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "new-service-account@testproject-00717777.iam.gserviceaccount.com",
+  "client_id": "112559937115516111077",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/new-service-account%40testproject-00717777.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
 
 jobs:
-  setup-prepare-manifests-deploy:
+  authenticate-with-gcp-and-deploy:
     name: Setup, Prepare, and Deploy
     runs-on: ubuntu-latest
     environment: production
@@ -33,13 +47,20 @@ jobs:
 # an access token.
     
     
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v2'
+    # - id: 'auth'
+    #   name: 'Authenticate to Google Cloud'
+    #   uses: 'google-github-actions/auth@v2'
+    #   with:
+    #     token_format: 'access_token'
+    #     workload_identity_provider:  ${{ env.WORKLOAD_IDENTITY_PROVIDER_ID }}
+    #     service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+
+    #authenticate with service account 
+
+    - uses: 'google-github-actions/auth@v2'
       with:
-        token_format: 'access_token'
-        workload_identity_provider:  ${{ env.WORKLOAD_IDENTITY_PROVIDER_ID }}
-        service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+        credentials_json: '${{ env.GOOGLE_CREDENTIALS }}' 
+        # Replace with the name of your GitHub Actions secret
 
 
     # Get the GKE credentials so we can deploy to the # cluster
