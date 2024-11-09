@@ -42,7 +42,7 @@ jobs:
     #     workload_identity_provider:  ${{ env.WORKLOAD_IDENTITY_PROVIDER_ID }}
     #     servicef_account: ${{ env.GCP_SERVICE_ACCOUNT }}
 
-    #authenticate with service account 
+    #authenticate with service account f
 
     - uses: 'google-github-actions/auth@v2'
       with:
