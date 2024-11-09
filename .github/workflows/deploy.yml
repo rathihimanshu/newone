@@ -31,8 +31,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         token_format: 'access_token'
-        workload_identity_provider:  ${{ 
-secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
+        workload_identity_provider:  ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
         service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
     # Get the GKE credentials so we can deploy to the # cluster
